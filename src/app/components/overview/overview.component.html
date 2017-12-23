@@ -1,0 +1,70 @@
+<mat-toolbar color="primary">
+	<span>LegalFab</span>
+</mat-toolbar>
+
+
+
+<div style="margin-top:1rem" fxLayoutAlign="center center">
+	<div class="button-row" fxFlex="90" fxLayoutAlign="start start">
+		<button mat-raised-button color="primary" (click)="createRecord(true)"><i class="material-icons">add</i>  Create Project</button>
+	</div>
+</div>
+
+<div fxLayout="row" style="margin-top:2rem;margin-bottom:2rem;" fxLayoutAlign="center center">
+<div class="" fxFlex="90" class="card">
+  <mat-table #table [dataSource]="dataSource">
+
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+	
+	<!-- Position Column -->
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let element"> 
+		<i style="cursor:pointer;margin-right:0.7rem;color:cornflowerblue" (click)="editRecord($event, element)" class="material-icons">mode_edit</i>
+		<i style="cursor:pointer;margin-left:0.7rem;color:red" (click)="deleteRecord($event, element)" class="material-icons">delete</i> </mat-cell>
+    </ng-container>
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="projectTitle">
+      <mat-header-cell *matHeaderCellDef> Project Title </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.projectTitle}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="summaryAbstract">
+      <mat-header-cell *matHeaderCellDef> Summary/Abstract </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.summaryAbstract}} </mat-cell>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="lastModified">
+      <mat-header-cell *matHeaderCellDef> Last Modified </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.lastModified}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"
+             (click)="selection.toggle(row)">
+    </mat-row>
+  </mat-table>
+  
+  <mat-paginator #paginator
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 20]">
+  </mat-paginator>
+</div>
+</div>
